@@ -1,7 +1,7 @@
 /run/verbose 2
 /run/initialize 
-/run/physicsModified/control/execute vis.mac
-/vis/open OGL 600x600-0+0
+/run/physicsModified/c/tracking/storeTrajectory 2
+open OGL 600x600-0+0
 /vis/sceneHandler/create OGL
 /vis/viewer/create ! ! 600x600-0+0
 /vis/viewer/refresh
@@ -38,3 +38,4 @@
 /vis/viewer/set/autoRefresh true
 /vis/viewer/refresh
 /vis/verbose warnings
+/run/beamOn 100
