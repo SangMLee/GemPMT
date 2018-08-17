@@ -1,0 +1,92 @@
+#include "ElectricFieldSetup.hh"
+
+#include "G4UniformElectricField.hh"
+#include "G4UniformMagField.hh"
+#include "G4MagneticField.hh"
+#include "G4FieldManager.hh"
+#include "G4TransportationManager.hh"
+#include "G4EquationOfMotion.hh"
+#include "G4EqMagElectricField.hh"
+#include "G4Mag_UsualEqRhs.hh"
+#include "G4MagIntegratorStepper.hh"
+#include "G4MagIntegratorDriver.hh"
+#include "G4ChordFinder.hh"
+
+#include "G4ExplicitEuler.hh"
+#include "G4ImplicitEuler.hh"
+#include "G4SimpleRunge.hh"
+#include "G4SimpleHeum.hh"
+#include "G4ClassicalRK4.hh"
+#include "G4HelixExplicitEuler.hh"
+#include "G4HelixImplicitEuler.hh"
+#include "G4HelixSimpleRunge.hh"
+#include "G4CashKarpRKF45.hh"
+#include "G4RKG3_Stepper.hh"
+
+#include "G4PhysicalConstants.hh"
+#include "G4SystemOfUnits.hh"
+
+ElectricFieldSetup::ElectricFieldSetup()
+ : fMinStep(0.010*um),
+   fFieldManager(0),
+   fChordFinder(0),
+   fEquation(0),
+   fEMfield(0),
+   fElFieldValue(),
+{
+  fEMfield = new G4UniformElectricField(
+                   G4ThreeVector(0.0,100000.0*kilovolt/cm,0.0));
+  fEquation = new G4EqMagElectricField(fEMfield);
+
+  fFieldManager = GetGlobalFieldManager();
+
+  UpdateIntegrator();
+}
+
+ElectricFieldSetup::ElectricFieldSetup(G4ThreeVector fieldVector)
+  : fMinStep(0.010*um),
+    fFieldManager(0),
+    fChordFinder(0),
+    fEquation(0),
+    fEMfield(0),
+    fElFieldValue(),
+{
+  fEMfield = new G4UniformElectricField(fieldVector);
+  fEquation = new G4EqMagElectricField(fEMfield);
+
+  fFieldManager = GetGlobalFieldManager();
+  UpdateIntegrator();
+
+}
+
+ElectricFieldSetup::~ElectricFieldSetup()
+{
+  G4cout << " F02ElectricFieldSetup - dtor called. " << G4endl;
+
+
+  delete fChordFinder;  fChordFinder= nullptr;
+  delete fStepper;      fStepper = nullptr;
+  delete fEquation;     fEquation = nullptr;
+  delete fEMfield;      fEMfield = nullptr;
+}
+
+void ElectricFieldSetup::SetFieldValue(G4double fieldValue)
+{
+  G4ThreeVector fieldVector( 0.0, 0.0, fieldValue );
+  SetFieldValue( fieldVector );
+}
+
+void F02ElectricFieldSetup::SetFieldValue(G4ThreeVector fieldVector)
+{
+  if (fEMfield) delete fEMfield;
+  G4FieldManager* fieldMgr= GetGlobalFieldManager();
+
+  if (fieldVector != G4ThreeVector(0.,0.,0.)) {
+    fEMfield = new G4UniformElectricField(fieldVector);
+  } else {
+    fEMfield = 0;
+  }
+  fieldMgr->SetDetectorField(fEMfield);
+  fEquation->SetFieldObj(fEMfield); 
+}
+

@@ -1,0 +1,2 @@
+/home/daniellee1004/Geant/CMakeFiles/GemPMT.dir
+/home/daniellee1004/Geant/CMakeFiles/YC.dir
