@@ -1,47 +1,38 @@
 #include "SteppingAction.hh"
-#include "EventAction.hh"
-#include "DetectorConstruction.hh"
+#include "GPMAnalysis.hh"
+#include "G4Track.hh"
 
-#include "G4Step.hh"
-#include "G4Event.hh"
-#include "G4String.hh"
-#include "G4RunManager.hh"
+#include "G4SteppingManager.hh"
 
-SteppingAction::SteppingAction(const DetectorConstruction* detectorConstruction, EventAction* eventAction) :
-   G4UserSteppingAction(),
-   fEventAction(eventAction),
-   fDetConstruction(detectorConstruction) {
+SteppingAction::SteppingAction() {
 }
 
-SteppingAction::~SteppingAction() {
+void SteppingAction::UserSteppingAction(const G4Step* aStep) {
+
+   const G4VTouchable* touchable = aStep->GetPreStepPoint()->GetTouchable();
+   G4Track* track = aStep->GetTrack();  
+
+   auto volume = touchable->GetVolume();
+   G4String volumeName = volume->GetName();
+
+   G4String processName = aStep->GetPostStepPoint()->GetProcessDefinedStep()->GetProcessName();
+
+   G4int parentID = track->GetParentID();
+
+   if (parentID == 0) {
+     // G4cout << "Parent process name : "<< processName << G4endl;
+   } 
+  
+  G4double edep(0.);
+  edep = aStep->GetTotalEnergyDeposit();
+
+  if (volumeName.find("Scint") == G4String::npos) {
+     GPMAnalysis::GetInstance()->AddScintEDep(edep);
+  }
+  if (parentID != 0) {
+     G4String V_volname = track->GetLogicalVolumeAtVertex()->GetName();
+     G4int PDGID = track->GetParticleDefinition()->GetPDGEncoding(); 
+     G4int trackIndex = track->GetTrackID();
+     GPMAnalysis::GetInstance()->ScintPCProd(PDGID, V_volname, volumeName, trackIndex); 
+  } 
 }
-
-void SteppingAction::UserSteppingAction(const G4Step* step) {
-   //get volume of current step 
-   auto volume = step->GetPreStepPoint()->GetTouchableHandle()->GetVolume();
-   G4String volName = volume->GetName();
-   //Energy Deposit
-   auto edep = step->GetTotalEnergyDeposit();
-
-   //step length
-   G4double stepLength = 0;
-   if (step->GetTrack()->GetDefinition()->GetPDGCharge() != 0.) {
-      stepLength = step->GetStepLength();
-   }
-
-   if (isAbsorber(volName)) {
-      fEventAction->AddAbs(edep);
-   } else {
-      fEventAction->AddGap(edep);
-   }
-}
-
-bool SteppingAction::isAbsorber(G4String volumeName) {
-     
-   if (volumeName.find("Gas") != G4String::npos) {
-      return false;
-   } else {
-      return true;
-   }
-}
-

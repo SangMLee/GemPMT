@@ -5,14 +5,21 @@
 #include "DetectorConstruction.hh"
 #include "SteppingAction.hh"
 
-ActionInitialization::ActionInitialization(DetectorConstruction* detConstruction) :
-   G4VUserActionInitialization(),
-   fDetConstruction(detConstruction) {
+ActionInitialization::ActionInitialization() :
+   G4VUserActionInitialization() {
+ //  fDetConstruction(detConstruction) {
 }
 
 ActionInitialization::~ActionInitialization() {
 }
 
+void ActionInitialization::Build() const {
+   SetUserAction(new PrimaryGeneratorAction);
+   SetUserAction(new RunAction);
+   SetUserAction(new EventAction);
+   SetUserAction(new SteppingAction);
+}
+/*
 void ActionInitialization::BuildForMaster() const {
    SetUserAction(new RunAction);   
 }
@@ -24,3 +31,4 @@ void ActionInitialization::Build() const {
    SetUserAction(eventAction);
    SetUserAction(new SteppingAction(fDetConstruction, eventAction));
 }
+*/

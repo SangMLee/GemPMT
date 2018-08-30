@@ -1,12 +1,11 @@
 #include "G4UImanager.hh"
-#ifdef G4MULTITHREADED
-#include "G4MTRunManager.hh"
-#else
+//#ifdef G4MULTITHREADED
+//#include "G4MTRunManager.hh"
+//#else
 #include "G4RunManager.hh"
-#endif
+//#endif
 
 #include "FTFP_BERT.hh"
-
 #include "DetectorConstruction.hh"
 #include "ActionInitialization.hh"
 #include "G4UIExecutive.hh"
@@ -23,16 +22,16 @@ int main(int argc, char** argv) {
 
    G4Random::setTheEngine(new CLHEP::RanecuEngine());
          
-#ifdef G4MULTITHREADED
-   G4MTRunManager * runManager = new G4MTRunManager;
-#else 
+//#ifdef G4MULTITHREADED
+//   G4MTRunManager * runManager = new G4MTRunManager;
+//#else 
    G4RunManager * runManager = new G4RunManager;
-#endif
+//#endif
    
    DetectorConstruction* fDetectorConstruction = new DetectorConstruction();
    runManager->SetUserInitialization(fDetectorConstruction);
    runManager->SetUserInitialization(new FTFP_BERT);
-   runManager->SetUserInitialization(new ActionInitialization(fDetectorConstruction));
+   runManager->SetUserInitialization(new ActionInitialization());
 
    G4VisManager* visManager = new G4VisExecutive;
    visManager->Initialize();

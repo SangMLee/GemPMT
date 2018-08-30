@@ -39,15 +39,18 @@ void DetectorConstruction::DefineMaterials() {
    G4Material* Copper = manager->FindOrBuildMaterial("G4_Cu");
    G4Material* Kapton = manager->FindOrBuildMaterial("G4_KAPTON");
    G4Material* CsI = manager->FindOrBuildMaterial("G4_CESIUM_IODIDE");
+   G4Material* BaF2 = manager->FindOrBuildMaterial("G4_BARIUM_FLUORIDE");
    G4Material* Anthracene = manager->FindOrBuildMaterial("G4_ANTHRACENE");
+   G4Material* NaI = manager->FindOrBuildMaterial("G4_SODIUM_IODIDE");
+   G4Material* PbWO4 = manager->FindOrBuildMaterial("G4_PbWO4");
    G4Material* Glass = manager->FindOrBuildMaterial("G4_Pyrex_Glass");
-
+  
    fGlassMat = Glass; 
    fVacMat = Vaccum;
    fCuMat = Copper;
    fKapMat = Kapton;
    fPCMat = CsI;
-   fScintMat = Anthracene;
+   fScintMat = PbWO4;
 
    G4double density(0.), fractionMass(0.);
    G4int numel(0), natoms(0);
@@ -159,7 +162,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct() {
 
    G4double gemSizeZ[24] = 
    {
-     0.05*m,                    //Scintillator  
+     0.025*m,                    //Scintillator  
      130.0*nm, 3.0*mm,           //PhotoCathode
      5.0*mm,                    //Fake
      35.*um,3.2*mm,35.*um,      //Drift Board

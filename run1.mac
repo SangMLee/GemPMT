@@ -1,4 +1,9 @@
 /run/initialize 
 
-/run/printProgress 100
-/run/beamOn 10000
+/run/setCutForAGivenParticle e+ 100 eV
+/run/setCutForAGivenParticle e- 100 eV
+/run/setCutForAGivenParticle gamma 100 eV
+/run/setCut 0.05 mm
+
+///run/printProgress 100
+/run/beamOn 100000
