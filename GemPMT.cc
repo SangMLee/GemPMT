@@ -21,7 +21,7 @@ int main(int argc, char** argv) {
    }
 
    G4Random::setTheEngine(new CLHEP::RanecuEngine());
-         
+   G4Random::setTheSeed(time(NULL)+38999008.);      
 //#ifdef G4MULTITHREADED
 //   G4MTRunManager * runManager = new G4MTRunManager;
 //#else 

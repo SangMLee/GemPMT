@@ -317,6 +317,60 @@ src/GPMAnalysis.cc.s:
 	$(MAKE) -f CMakeFiles/GemPMT.dir/build.make CMakeFiles/GemPMT.dir/src/GPMAnalysis.cc.s
 .PHONY : src/GPMAnalysis.cc.s
 
+src/GasGapHit.o: src/GasGapHit.cc.o
+
+.PHONY : src/GasGapHit.o
+
+# target to build an object file
+src/GasGapHit.cc.o:
+	$(MAKE) -f CMakeFiles/GemPMT.dir/build.make CMakeFiles/GemPMT.dir/src/GasGapHit.cc.o
+.PHONY : src/GasGapHit.cc.o
+
+src/GasGapHit.i: src/GasGapHit.cc.i
+
+.PHONY : src/GasGapHit.i
+
+# target to preprocess a source file
+src/GasGapHit.cc.i:
+	$(MAKE) -f CMakeFiles/GemPMT.dir/build.make CMakeFiles/GemPMT.dir/src/GasGapHit.cc.i
+.PHONY : src/GasGapHit.cc.i
+
+src/GasGapHit.s: src/GasGapHit.cc.s
+
+.PHONY : src/GasGapHit.s
+
+# target to generate assembly for a file
+src/GasGapHit.cc.s:
+	$(MAKE) -f CMakeFiles/GemPMT.dir/build.make CMakeFiles/GemPMT.dir/src/GasGapHit.cc.s
+.PHONY : src/GasGapHit.cc.s
+
+src/GasGapSensitiveDetector.o: src/GasGapSensitiveDetector.cc.o
+
+.PHONY : src/GasGapSensitiveDetector.o
+
+# target to build an object file
+src/GasGapSensitiveDetector.cc.o:
+	$(MAKE) -f CMakeFiles/GemPMT.dir/build.make CMakeFiles/GemPMT.dir/src/GasGapSensitiveDetector.cc.o
+.PHONY : src/GasGapSensitiveDetector.cc.o
+
+src/GasGapSensitiveDetector.i: src/GasGapSensitiveDetector.cc.i
+
+.PHONY : src/GasGapSensitiveDetector.i
+
+# target to preprocess a source file
+src/GasGapSensitiveDetector.cc.i:
+	$(MAKE) -f CMakeFiles/GemPMT.dir/build.make CMakeFiles/GemPMT.dir/src/GasGapSensitiveDetector.cc.i
+.PHONY : src/GasGapSensitiveDetector.cc.i
+
+src/GasGapSensitiveDetector.s: src/GasGapSensitiveDetector.cc.s
+
+.PHONY : src/GasGapSensitiveDetector.s
+
+# target to generate assembly for a file
+src/GasGapSensitiveDetector.cc.s:
+	$(MAKE) -f CMakeFiles/GemPMT.dir/build.make CMakeFiles/GemPMT.dir/src/GasGapSensitiveDetector.cc.s
+.PHONY : src/GasGapSensitiveDetector.cc.s
+
 src/PrimaryGeneratorAction.o: src/PrimaryGeneratorAction.cc.o
 
 .PHONY : src/PrimaryGeneratorAction.o
@@ -427,6 +481,12 @@ help:
 	@echo "... src/GPMAnalysis.o"
 	@echo "... src/GPMAnalysis.i"
 	@echo "... src/GPMAnalysis.s"
+	@echo "... src/GasGapHit.o"
+	@echo "... src/GasGapHit.i"
+	@echo "... src/GasGapHit.s"
+	@echo "... src/GasGapSensitiveDetector.o"
+	@echo "... src/GasGapSensitiveDetector.i"
+	@echo "... src/GasGapSensitiveDetector.s"
 	@echo "... src/PrimaryGeneratorAction.o"
 	@echo "... src/PrimaryGeneratorAction.i"
 	@echo "... src/PrimaryGeneratorAction.s"
