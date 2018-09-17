@@ -25,6 +25,7 @@ class GPMAnalysis {
       void AddGapSecondary(const G4ParticleDefinition* part, G4int gapNum); 
       void AddScintEDep(G4double Sedep);
       void ScintPCProd(G4int PDG, G4String V_volumName, G4String C_volumeName, G4int trackIndex);
+      void OpPhoton(G4String p_Name);
       void SavePrimary(G4double primaryene, G4double zinteraction);
       void SaveGarfieldQuantities(G4int aPdgcode,
                                   G4double aKineticEnergy,
@@ -65,7 +66,7 @@ class GPMAnalysis {
       G4int n_gamma, n_electron, n_positron, n_gapGamma[4], n_gapElectron[4], n_gapPositron[4];
       G4int nGammaScint, nElec_GasGap1;
       G4int chargeGap, eleGap, posGap;
-      
+      G4int Op_Cer, Op_Scint;
       //////
       std::vector<G4double> edep;
       std::vector<G4double> edepI;

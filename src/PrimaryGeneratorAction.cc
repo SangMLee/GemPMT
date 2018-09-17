@@ -21,7 +21,7 @@ PrimaryGeneratorAction::PrimaryGeneratorAction()
    G4String particleName;
 
    G4ParticleDefinition* particle 
-      = particleTable->FindParticle(particleName = "mu+");
+      = particleTable->FindParticle(particleName = "gamma");
    fParticleGun->SetParticleDefinition(particle);
    fParticleGun->SetParticleMomentumDirection(G4ThreeVector(0., 0., 1.));
    fParticleGun->SetParticleMomentum(100*MeV);

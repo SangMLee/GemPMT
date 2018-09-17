@@ -19,7 +19,8 @@
 
 GPMAnalysis* GPMAnalysis::singleton = 0;
 
-GPMAnalysis* GPMAnalysis::GetInstance() {
+GPMAnalysis* GPMAnalysis::GetInstance() 
+{
    if (singleton == 0) {
       static GPMAnalysis analysis;
       singleton = &analysis;
@@ -27,15 +28,16 @@ GPMAnalysis* GPMAnalysis::GetInstance() {
    return singleton;
 }
 
-GPMAnalysis::~GPMAnalysis() {
-}
+GPMAnalysis::~GPMAnalysis() 
+{}
 
-GPMAnalysis::GPMAnalysis() {
+GPMAnalysis::GPMAnalysis() 
+{
    m_ROOT_file = 0;
 }
 
-void GPMAnalysis::PrepareNewRun(const G4Run*) {
-   
+void GPMAnalysis::PrepareNewRun(const G4Run*) 
+{   
    eventCounter = 0;
    n_gamma = 0;
    n_electron = 0;
@@ -55,6 +57,8 @@ void GPMAnalysis::PrepareNewRun(const G4Run*) {
    m_ROOT_histo1 = new TH1D("Sil_Edep","Energy Deposition in Scint",100,0,20);
    //Create tree and Branch 
    t = new TTree("Event", "Simulated Event Data");
+   t->Branch("nScint_Op", &Op_Scint, "Op_Scint/I");
+   t->Branch("nCer_Op", &Op_Cer, "Op_Cer/I");
    t->Branch("ScintEdep", &scintEdep, "sintEdep/D");
    t->Branch("nGammaScint", &nGammaScint, "nGammaScint/I");
    t->Branch("nElecGasGap1", &nElec_GasGap1, "nElec_GasGap1/I");
@@ -83,16 +87,18 @@ void GPMAnalysis::PrepareNewRun(const G4Run*) {
    g->Branch("momentumY",&momentumY);
    g->Branch("momentumZ",&momentumZ);
    // stuff
-
 }
 
-void GPMAnalysis::PrepareNewEvent(const G4Event*) {
+void GPMAnalysis::PrepareNewEvent(const G4Event*) 
+{
    isNewEvent = true;
    //Clearing stuff branch
    scintEdep = 0;
    nElec_GasGap1 = 0;
    nGammaScint = 0;
    
+   Op_Cer = 0;
+   Op_Scint = 0;
    edep.clear();
    edepI.clear();
    edepTime.clear();
@@ -104,7 +110,7 @@ void GPMAnalysis::PrepareNewEvent(const G4Event*) {
    eleGap = 0;
    posGap = 0;
    chargeGap = 0;
-
+  
    pdgCode.clear();
    kineticEnergy.clear();
    positionX.clear();
@@ -121,14 +127,16 @@ void GPMAnalysis::PrepareNewEvent(const G4Event*) {
    gapTrackEne.clear();
 }
 
-void GPMAnalysis::EndOfEvent(const G4Event*) {
+void GPMAnalysis::EndOfEvent(const G4Event*) 
+{
    //fill histograms and branches 
    
    t->Fill();
    g->Fill();
 }
 
-void GPMAnalysis::EndOfRun(const G4Run* aRun) {
+void GPMAnalysis::EndOfRun(const G4Run* aRun) 
+{
    // Write / close root files
    G4int numEvents = aRun->GetNumberOfEvent();
 
@@ -142,31 +150,36 @@ void GPMAnalysis::EndOfRun(const G4Run* aRun) {
    delete m_ROOT_file;
 }
 
-void GPMAnalysis::AddSecondary(const G4ParticleDefinition* part) {
+void GPMAnalysis::AddSecondary(const G4ParticleDefinition* part) 
+{
    if (part == G4Gamma::Gamma())            { ++n_gamma; }
    else if (part == G4Electron::Electron()) { ++n_electron; }
    else if (part == G4Positron::Positron()) { ++n_positron; }
 }
 
-void GPMAnalysis::AddGapSecondary(const G4ParticleDefinition* part, G4int gapNum) {
+void GPMAnalysis::AddGapSecondary(const G4ParticleDefinition* part, G4int gapNum) 
+{
    gapNum-- ; 
    if (part == G4Gamma::Gamma())            { ++n_gapGamma[gapNum]; }
    else if (part == G4Electron::Electron()) { ++n_gapElectron[gapNum]; }
    else if (part == G4Positron::Positron()) { ++n_gapPositron[gapNum]; }
 }
 
-void GPMAnalysis::AddScintEDep(G4double Sedep) {
+void GPMAnalysis::AddScintEDep(G4double Sedep) 
+{
   scintEdep += Sedep;
   m_ROOT_histo1->Fill(Sedep);
 }
 
-void GPMAnalysis::SetEnergyDeposition(std::string someVolume, G4double someEdep, G4double someEdepI, G4double someTime){
+void GPMAnalysis::SetEnergyDeposition(std::string someVolume, G4double someEdep, G4double someEdepI, G4double someTime)
+{
    edep.push_back(someEdep);
    edepI.push_back(someEdepI);
    edepTime.push_back(someTime);
 }
 
-void GPMAnalysis::ScintPCProd(G4int PDG, G4String V_volumeName, G4String C_volumeName, G4int trackIndex) {
+void GPMAnalysis::ScintPCProd(G4int PDG, G4String V_volumeName, G4String C_volumeName, G4int trackIndex) 
+{
    if ((PDG == 11 || PDG == -11) && (C_volumeName == "GasGap1") && (V_volumeName == "PhotoCathodeLog")) {
       Eit = std::find(EindexId.begin(), EindexId.end(), trackIndex);
       if (Eit == EindexId.end()) {
@@ -182,6 +195,13 @@ void GPMAnalysis::ScintPCProd(G4int PDG, G4String V_volumeName, G4String C_volum
    }
 }
 
+void GPMAnalysis::OpPhoton(G4String p_Name)
+{
+   if (p_Name == "Scintillation") Op_Scint++;
+   if (p_Name == "Cerenkov") Op_Cer++;
+}
+
+
 void GPMAnalysis::SaveGarfieldQuantities(
       G4int aPdgCode,
       G4double aKineticEnergy,
@@ -190,7 +210,8 @@ void GPMAnalysis::SaveGarfieldQuantities(
       G4double aPositionZ,
       G4double aMomentumX,
       G4double aMomentumY,
-      G4double aMomentumZ) {
+      G4double aMomentumZ) 
+{
 
    pdgCode.push_back(aPdgCode);
    kineticEnergy.push_back(aKineticEnergy);
@@ -202,7 +223,8 @@ void GPMAnalysis::SaveGarfieldQuantities(
    momentumZ.push_back(aMomentumZ);
 }
 
-void GPMAnalysis::SavePrimary(G4double primaryene, G4double zinteraction) {
+void GPMAnalysis::SavePrimary(G4double primaryene, G4double zinteraction) 
+{
    primaryEne = primaryene;
    zInteraction = zinteraction; 
 }
@@ -215,8 +237,8 @@ void GPMAnalysis::SaveGapTrack(
       std::string genvolume,
       G4double genz,
       std::string volname,
-      G4double kinene) {
-
+      G4double kinene) 
+{
    if (genprocess == "primary") return;
    if (gapCharge != 0) chargeGap = 1;
    if (gapPart == 11) eleGap = 1;

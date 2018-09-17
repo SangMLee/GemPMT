@@ -23,8 +23,8 @@
 // * acceptance of all terms of the Geant4 Software license.          *
 // ********************************************************************
 //
-/// \file OpNovice/src/OpNovicePhysicsList.cc
-/// \brief Implementation of the OpNovicePhysicsList class
+/// \file /src/PhysicsList.cc
+/// \brief Implementation of the PhysicsList class
 //
 //
 //
@@ -32,8 +32,8 @@
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 #include "globals.hh"
-#include "OpNovicePhysicsList.hh"
-#include "OpNovicePhysicsListMessenger.hh"
+#include "PhysicsList.hh"
+#include "PhysicsListMessenger.hh"
 
 #include "G4ParticleDefinition.hh"
 #include "G4ParticleTypes.hh"
@@ -58,30 +58,30 @@
 #include "G4LossTableManager.hh"
 #include "G4EmSaturation.hh"
 
-G4ThreadLocal G4int OpNovicePhysicsList::fVerboseLevel = 1;
-G4ThreadLocal G4int OpNovicePhysicsList::fMaxNumPhotonStep = 20;
-G4ThreadLocal G4Cerenkov* OpNovicePhysicsList::fCerenkovProcess = 0;
-G4ThreadLocal G4Scintillation* OpNovicePhysicsList::fScintillationProcess = 0;
-G4ThreadLocal G4OpAbsorption* OpNovicePhysicsList::fAbsorptionProcess = 0;
-G4ThreadLocal G4OpRayleigh* OpNovicePhysicsList::fRayleighScatteringProcess = 0;
-G4ThreadLocal G4OpMieHG* OpNovicePhysicsList::fMieHGScatteringProcess = 0;
-G4ThreadLocal G4OpBoundaryProcess* OpNovicePhysicsList::fBoundaryProcess = 0;
+G4ThreadLocal G4int PhysicsList::fVerboseLevel = 1;
+G4ThreadLocal G4int PhysicsList::fMaxNumPhotonStep = 20;
+G4ThreadLocal G4Cerenkov* PhysicsList::fCerenkovProcess = 0;
+G4ThreadLocal G4Scintillation* PhysicsList::fScintillationProcess = 0;
+G4ThreadLocal G4OpAbsorption* PhysicsList::fAbsorptionProcess = 0;
+G4ThreadLocal G4OpRayleigh* PhysicsList::fRayleighScatteringProcess = 0;
+G4ThreadLocal G4OpMieHG* PhysicsList::fMieHGScatteringProcess = 0;
+G4ThreadLocal G4OpBoundaryProcess* PhysicsList::fBoundaryProcess = 0;
  
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-OpNovicePhysicsList::OpNovicePhysicsList() 
+PhysicsList::PhysicsList() 
  : G4VUserPhysicsList()
 {
-  fMessenger = new OpNovicePhysicsListMessenger(this);
+  fMessenger = new PhysicsListMessenger(this);
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-OpNovicePhysicsList::~OpNovicePhysicsList() { delete fMessenger; }
+PhysicsList::~PhysicsList() { delete fMessenger; }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-void OpNovicePhysicsList::ConstructParticle()
+void PhysicsList::ConstructParticle()
 {
   // In this method, static member functions should be called
   // for all particles which you want to use.
@@ -106,7 +106,7 @@ void OpNovicePhysicsList::ConstructParticle()
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-void OpNovicePhysicsList::ConstructProcess()
+void PhysicsList::ConstructProcess()
 {
   AddTransportation();
   ConstructDecay();
@@ -120,7 +120,7 @@ void OpNovicePhysicsList::ConstructProcess()
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-void OpNovicePhysicsList::ConstructDecay()
+void PhysicsList::ConstructDecay()
 {
   // Add Decay Process
   G4Decay* theDecayProcess = new G4Decay();
@@ -160,7 +160,7 @@ void OpNovicePhysicsList::ConstructDecay()
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-void OpNovicePhysicsList::ConstructEM()
+void PhysicsList::ConstructEM()
 {
   auto particleIterator=GetParticleIterator();
   particleIterator->reset();
@@ -215,7 +215,7 @@ void OpNovicePhysicsList::ConstructEM()
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 #include "G4Threading.hh"
 
-void OpNovicePhysicsList::ConstructOp()
+void PhysicsList::ConstructOp()
 {
   fCerenkovProcess = new G4Cerenkov("Cerenkov");
   fCerenkovProcess->SetMaxNumPhotonsPerStep(fMaxNumPhotonStep);
@@ -271,7 +271,7 @@ void OpNovicePhysicsList::ConstructOp()
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-void OpNovicePhysicsList::SetVerbose(G4int verbose)
+void PhysicsList::SetVerbose(G4int verbose)
 {
   fVerboseLevel = verbose;
 
@@ -285,7 +285,7 @@ void OpNovicePhysicsList::SetVerbose(G4int verbose)
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-void OpNovicePhysicsList::SetNbOfPhotonsCerenkov(G4int MaxNumber)
+void PhysicsList::SetNbOfPhotonsCerenkov(G4int MaxNumber)
 {
   fMaxNumPhotonStep = MaxNumber;
 
@@ -294,14 +294,14 @@ void OpNovicePhysicsList::SetNbOfPhotonsCerenkov(G4int MaxNumber)
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-void OpNovicePhysicsList::SetCuts()
+void PhysicsList::SetCuts()
 {
   //  " G4VUserPhysicsList::SetCutsWithDefault" method sets
   //   the default cut value for all particle types
   //
   SetCutsWithDefault();
 
-  if (verboseLevel>0) DumpCutValuesTable();
+  //if (verboseLevel>0) DumpCutValuesTable();
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

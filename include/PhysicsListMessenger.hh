@@ -23,8 +23,8 @@
 // * acceptance of all terms of the Geant4 Software license.          *
 // ********************************************************************
 //
-/// \file OpNovice/include/OpNovicePhysicsListMessenger.hh
-/// \brief Definition of the OpNovicePhysicsListMessenger class
+/// \file /include/PhysicsListMessenger.hh
+/// \brief Definition of the PhysicsListMessenger class
 //
 //
 //
@@ -33,30 +33,30 @@
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-#ifndef OpNovicePhysicsListMessenger_h
-#define OpNovicePhysicsListMessenger_h 1
+#ifndef PhysicsListMessenger_h
+#define PhysicsListMessenger_h 1
 
 #include "globals.hh"
 #include "G4UImessenger.hh"
 
-class OpNovicePhysicsList;
+class PhysicsList;
 class G4UIdirectory;
 class G4UIcmdWithAnInteger;
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-class OpNovicePhysicsListMessenger: public G4UImessenger
+class PhysicsListMessenger: public G4UImessenger
 {
   public:
-    OpNovicePhysicsListMessenger(OpNovicePhysicsList* );
-    virtual ~OpNovicePhysicsListMessenger();
+    PhysicsListMessenger(PhysicsList* );
+    virtual ~PhysicsListMessenger();
  
     virtual void SetNewValue(G4UIcommand*, G4String);
  
   private:
-    OpNovicePhysicsList*  fPhysicsList;
+    PhysicsList*  fPhysicsList;
  
-    G4UIdirectory*        fOpNoviceDir;
+    G4UIdirectory*        fDir;
     G4UIdirectory*        fPhysDir;
     G4UIcmdWithAnInteger* fVerboseCmd;
     G4UIcmdWithAnInteger* fCerenkovCmd;

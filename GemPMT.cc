@@ -6,6 +6,7 @@
 //#endif
 
 #include "FTFP_BERT.hh"
+#include "PhysicsList.hh"
 #include "DetectorConstruction.hh"
 #include "ActionInitialization.hh"
 #include "G4UIExecutive.hh"
@@ -30,7 +31,9 @@ int main(int argc, char** argv) {
    
    DetectorConstruction* fDetectorConstruction = new DetectorConstruction();
    runManager->SetUserInitialization(fDetectorConstruction);
-   runManager->SetUserInitialization(new FTFP_BERT);
+   auto physicsList = new PhysicsList();
+   physicsList->SetVerbose(1);
+   runManager->SetUserInitialization(physicsList);
    runManager->SetUserInitialization(new ActionInitialization());
 
    G4VisManager* visManager = new G4VisExecutive;

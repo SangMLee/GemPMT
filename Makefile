@@ -371,6 +371,60 @@ src/GasGapSensitiveDetector.cc.s:
 	$(MAKE) -f CMakeFiles/GemPMT.dir/build.make CMakeFiles/GemPMT.dir/src/GasGapSensitiveDetector.cc.s
 .PHONY : src/GasGapSensitiveDetector.cc.s
 
+src/PhysicsList.o: src/PhysicsList.cc.o
+
+.PHONY : src/PhysicsList.o
+
+# target to build an object file
+src/PhysicsList.cc.o:
+	$(MAKE) -f CMakeFiles/GemPMT.dir/build.make CMakeFiles/GemPMT.dir/src/PhysicsList.cc.o
+.PHONY : src/PhysicsList.cc.o
+
+src/PhysicsList.i: src/PhysicsList.cc.i
+
+.PHONY : src/PhysicsList.i
+
+# target to preprocess a source file
+src/PhysicsList.cc.i:
+	$(MAKE) -f CMakeFiles/GemPMT.dir/build.make CMakeFiles/GemPMT.dir/src/PhysicsList.cc.i
+.PHONY : src/PhysicsList.cc.i
+
+src/PhysicsList.s: src/PhysicsList.cc.s
+
+.PHONY : src/PhysicsList.s
+
+# target to generate assembly for a file
+src/PhysicsList.cc.s:
+	$(MAKE) -f CMakeFiles/GemPMT.dir/build.make CMakeFiles/GemPMT.dir/src/PhysicsList.cc.s
+.PHONY : src/PhysicsList.cc.s
+
+src/PhysicsListMessenger.o: src/PhysicsListMessenger.cc.o
+
+.PHONY : src/PhysicsListMessenger.o
+
+# target to build an object file
+src/PhysicsListMessenger.cc.o:
+	$(MAKE) -f CMakeFiles/GemPMT.dir/build.make CMakeFiles/GemPMT.dir/src/PhysicsListMessenger.cc.o
+.PHONY : src/PhysicsListMessenger.cc.o
+
+src/PhysicsListMessenger.i: src/PhysicsListMessenger.cc.i
+
+.PHONY : src/PhysicsListMessenger.i
+
+# target to preprocess a source file
+src/PhysicsListMessenger.cc.i:
+	$(MAKE) -f CMakeFiles/GemPMT.dir/build.make CMakeFiles/GemPMT.dir/src/PhysicsListMessenger.cc.i
+.PHONY : src/PhysicsListMessenger.cc.i
+
+src/PhysicsListMessenger.s: src/PhysicsListMessenger.cc.s
+
+.PHONY : src/PhysicsListMessenger.s
+
+# target to generate assembly for a file
+src/PhysicsListMessenger.cc.s:
+	$(MAKE) -f CMakeFiles/GemPMT.dir/build.make CMakeFiles/GemPMT.dir/src/PhysicsListMessenger.cc.s
+.PHONY : src/PhysicsListMessenger.cc.s
+
 src/PrimaryGeneratorAction.o: src/PrimaryGeneratorAction.cc.o
 
 .PHONY : src/PrimaryGeneratorAction.o
@@ -424,6 +478,33 @@ src/RunAction.s: src/RunAction.cc.s
 src/RunAction.cc.s:
 	$(MAKE) -f CMakeFiles/GemPMT.dir/build.make CMakeFiles/GemPMT.dir/src/RunAction.cc.s
 .PHONY : src/RunAction.cc.s
+
+src/StackingAction.o: src/StackingAction.cc.o
+
+.PHONY : src/StackingAction.o
+
+# target to build an object file
+src/StackingAction.cc.o:
+	$(MAKE) -f CMakeFiles/GemPMT.dir/build.make CMakeFiles/GemPMT.dir/src/StackingAction.cc.o
+.PHONY : src/StackingAction.cc.o
+
+src/StackingAction.i: src/StackingAction.cc.i
+
+.PHONY : src/StackingAction.i
+
+# target to preprocess a source file
+src/StackingAction.cc.i:
+	$(MAKE) -f CMakeFiles/GemPMT.dir/build.make CMakeFiles/GemPMT.dir/src/StackingAction.cc.i
+.PHONY : src/StackingAction.cc.i
+
+src/StackingAction.s: src/StackingAction.cc.s
+
+.PHONY : src/StackingAction.s
+
+# target to generate assembly for a file
+src/StackingAction.cc.s:
+	$(MAKE) -f CMakeFiles/GemPMT.dir/build.make CMakeFiles/GemPMT.dir/src/StackingAction.cc.s
+.PHONY : src/StackingAction.cc.s
 
 src/SteppingAction.o: src/SteppingAction.cc.o
 
@@ -487,12 +568,21 @@ help:
 	@echo "... src/GasGapSensitiveDetector.o"
 	@echo "... src/GasGapSensitiveDetector.i"
 	@echo "... src/GasGapSensitiveDetector.s"
+	@echo "... src/PhysicsList.o"
+	@echo "... src/PhysicsList.i"
+	@echo "... src/PhysicsList.s"
+	@echo "... src/PhysicsListMessenger.o"
+	@echo "... src/PhysicsListMessenger.i"
+	@echo "... src/PhysicsListMessenger.s"
 	@echo "... src/PrimaryGeneratorAction.o"
 	@echo "... src/PrimaryGeneratorAction.i"
 	@echo "... src/PrimaryGeneratorAction.s"
 	@echo "... src/RunAction.o"
 	@echo "... src/RunAction.i"
 	@echo "... src/RunAction.s"
+	@echo "... src/StackingAction.o"
+	@echo "... src/StackingAction.i"
+	@echo "... src/StackingAction.s"
 	@echo "... src/SteppingAction.o"
 	@echo "... src/SteppingAction.i"
 	@echo "... src/SteppingAction.s"

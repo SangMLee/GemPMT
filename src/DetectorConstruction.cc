@@ -17,6 +17,7 @@
 
 #include "G4SystemOfUnits.hh"
 #include "G4VisAttributes.hh"
+#include "G4OpticalSurface.hh"
 
 DetectorConstruction::DetectorConstruction() :
    G4VUserDetectorConstruction()
@@ -54,11 +55,11 @@ void DetectorConstruction::DefineMaterials() {
    G4int numel(0), natoms(0);
    
    G4Material* RbCsSb = new G4Material("bialkiali", density , numel=3);
-   RbCsSb->AddElement(elRB, natoms=1);
+   RbCsSb->AddElement(elRb, natoms=1);
    RbCsSb->AddElement(elCs, natoms=1);
    RbCsSb->AddElement(elSb, natoms=1);
    
-   density = 2.200*g/cm3
+   density = 2.200*g/cm3;
    G4Material* SiO2 =  new G4Material("quartz",density, numel=2);
    SiO2->AddElement(elSi, natoms=1);
    SiO2->AddElement(elO , natoms=2);
@@ -81,12 +82,77 @@ void DetectorConstruction::DefineMaterials() {
    ArCO2->AddMaterial(CarbonDioxide, 0.3);
 
    fGasMat = ArCO2;
-   fGlassMat = SiO2; 
+   fGlassMat = Glass; 
    fVacMat = Vaccum;
    fCuMat = Copper;
    fKapMat = Kapton;
    fPCMat = GaAs;
-   fScintMat = PbWO4;
+   fScintMat = CsI;
+  /* 
+   // -- Scint -- //
+   G4double photonEnergy[] = 
+                  { 2.99*eV };
+
+   G4int nEntries = sizeof(photonEnergy)/sizeof(G4double);
+   
+   G4double refractiveIndex_scint[] = 
+                  { 1.85 };
+   assert(sizeof(refractiveIndex_scint) == sizeof(photonEnergy));
+
+   G4double absorption_scint[] = 
+                  { 0.0259*m };
+   assert(sizeof(absorrption_scint) == sizeof(photonEnergy));
+
+   G4MaterialPropertiesTable* myScint = new G4MaterialPropertiesTable();
+   
+   myScint->AddProperty("RINDEX",  photonEnergy, refractiveIndex_scint, nEntries);
+   myScint->AddProperty("ABSLENGTH",  photonEnergy, absorption_scint,   nEntries);
+   myScint->AddConstProperty("RESOLUTIONSCALE", 1.0);
+   myScint->AddConstProperty("SCINTILLATIONYIELD" , 14000./MeV);
+   myScint->AddConstProperty("FASTTIMECONSTANT", 250.*ns);
+   
+   G4cout << "Scint G4MaterialPropertiesTable" << G4endl;
+   myScint->DumpTable();
+   fScintMat->SetMaterialPropertiesTable(myScint);
+
+   //Probably want to check this 
+   fScintMat->GetIonisation()->SetBirksConstant(0.126*mm/MeV);
+  */
+   
+    const G4int CSI_NUMENTRIES = 8;
+    G4double CSI_Crystal_PP[CSI_NUMENTRIES] = {3.37*eV, 3.62*eV, 3.71*eV, 3.77*eV,
+        4.02*eV, 4.07*eV, 4.19*eV, 4.42*eV};
+        //h_Planck*c_light/lambda_max, h_Planck*c_light/lambda_min};//6.6*eV, 7.4*eV };
+    G4double CSI_Crystal_FAST[CSI_NUMENTRIES] = {0.23, 0.62, 0.77, 0.95, 0.97, 0.92, 0.63, 0.27};
+    G4double CSI_Crystal_RINDEX[CSI_NUMENTRIES] = { 1.78, 1.78, 1.78, 1.78, 1.78, 1.78, 1.78, 1.78};
+    G4double CSI_Crystal_absorption[CSI_NUMENTRIES] = {40*cm, 40*cm, 40*cm, 40*cm, 40*cm, 40*cm, 40*cm, 40*cm};
+    
+    G4MaterialPropertiesTable* CSI_Crystal_MPT = new G4MaterialPropertiesTable();
+    CSI_Crystal_MPT->AddProperty("FASTCOMPONENT", CSI_Crystal_PP, CSI_Crystal_FAST, CSI_NUMENTRIES);
+    CSI_Crystal_MPT->AddProperty("ABSLENGTH", CSI_Crystal_PP, CSI_Crystal_absorption,CSI_NUMENTRIES);
+    CSI_Crystal_MPT->AddProperty("RINDEX", CSI_Crystal_PP, CSI_Crystal_RINDEX, CSI_NUMENTRIES);
+    CSI_Crystal_MPT->AddConstProperty("SCINTILLATIONYIELD", 54000./MeV);        
+    CSI_Crystal_MPT->AddConstProperty("RESOLUTIONSCALE", 1.);            
+    CSI_Crystal_MPT->AddConstProperty("FASTTIMECONSTANT", 0.6*us);
+    fScintMat->SetMaterialPropertiesTable(CSI_Crystal_MPT);
+    fScintMat->GetIonisation()->SetBirksConstant(0.*mm/MeV);
+
+   // -- Pyrex Glass -- //
+
+   const G4int nEntries = 2;
+   G4double photonEnergy_glass[nEntries] = 
+         { 1.0*eV,  6.0*eV };
+   G4double refractiveIndex_glass[nEntries] = 
+         { 1.52, 1.52 };
+   G4double absorbption_glass[nEntries] = 
+         { 10*m, 10*m };
+
+   G4MaterialPropertiesTable* myGlass = new G4MaterialPropertiesTable();
+   myGlass->AddProperty("RINDEX", photonEnergy_glass, refractiveIndex_glass, nEntries);
+   myGlass->AddProperty("ABSLENGTH", photonEnergy_glass, absorbption_glass, nEntries);
+
+   fGlassMat->SetMaterialPropertiesTable(myGlass);
+
 }
 
 G4VPhysicalVolume* DetectorConstruction::Construct() {
@@ -134,7 +200,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct() {
    {
       "Scintillator",
     //  "PhotoCathode", "Glass",
-      "PhotoCathode" , " Glass",
+      "Glass", "PhotoCathode",
       "FakeBottom",
       "DriftCopper1", "DriftBoard", "DriftCopper2",
       "GasGap1",

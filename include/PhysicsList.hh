@@ -23,71 +23,69 @@
 // * acceptance of all terms of the Geant4 Software license.          *
 // ********************************************************************
 //
-/// \file OpNovice/src/OpNovicePhysicsListMessenger.cc
-/// \brief Implementation of the OpNovicePhysicsListMessenger class
+/// \file /include/PhysicsList.hh
+/// \brief Definition of the PhysicsList class
 //
 //
 //
-// 
-
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-#include "OpNovicePhysicsListMessenger.hh"
+#ifndef PhysicsList_h
+#define PhysicsList_h 1
 
-#include "OpNovicePhysicsList.hh"
-#include "G4UIdirectory.hh"
-#include "G4UIcmdWithAnInteger.hh"
+#include "globals.hh"
+#include "G4VUserPhysicsList.hh"
+
+class PhysicsListMessenger;
+
+class G4Cerenkov;
+class G4Scintillation;
+class G4OpAbsorption;
+class G4OpRayleigh;
+class G4OpMieHG;
+class G4OpBoundaryProcess;
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-OpNovicePhysicsListMessenger::
-  OpNovicePhysicsListMessenger(OpNovicePhysicsList* pPhys) 
-  : G4UImessenger(),
-    fPhysicsList(pPhys)
+class PhysicsList : public G4VUserPhysicsList
 {
-  fOpNoviceDir = new G4UIdirectory("/OpNovice/");
-  fOpNoviceDir->SetGuidance("UI commands of this example");
+  public:
 
-  fPhysDir = new G4UIdirectory("/OpNovice/phys/");
-  fPhysDir->SetGuidance("PhysicsList control");
+    PhysicsList();
+    virtual ~PhysicsList();
+
+  public:
+
+    virtual void ConstructParticle();
+    virtual void ConstructProcess();
+
+    virtual void SetCuts();
+
+    //these methods Construct physics processes and register them
+    void ConstructDecay();
+    void ConstructEM();
+    void ConstructOp();
+
+    //for the Messenger 
+    void SetVerbose(G4int);
+    void SetNbOfPhotonsCerenkov(G4int);
  
-  fVerboseCmd = new G4UIcmdWithAnInteger("/OpNovice/phys/verbose",this);
-  fVerboseCmd->SetGuidance("set verbose for physics processes");
-  fVerboseCmd->SetParameterName("verbose",true);
-  fVerboseCmd->SetDefaultValue(1);
-  fVerboseCmd->SetRange("verbose>=0");
-  fVerboseCmd->AvailableForStates(G4State_PreInit, G4State_Idle);
- 
-  fCerenkovCmd =
-           new G4UIcmdWithAnInteger("/OpNovice/phys/cerenkovMaxPhotons",this);
-  fCerenkovCmd->SetGuidance("set max nb of photons per step");
-  fCerenkovCmd->SetParameterName("MaxNumber",false);
-  fCerenkovCmd->SetRange("MaxNumber>=0");
-  fCerenkovCmd->AvailableForStates(G4State_PreInit, G4State_Idle);
-}
+  private:
+
+    PhysicsListMessenger* fMessenger;
+
+    static G4ThreadLocal G4int fVerboseLevel;
+    static G4ThreadLocal G4int fMaxNumPhotonStep;
+
+    static G4ThreadLocal G4Cerenkov* fCerenkovProcess;
+    static G4ThreadLocal G4Scintillation* fScintillationProcess;
+    static G4ThreadLocal G4OpAbsorption* fAbsorptionProcess;
+    static G4ThreadLocal G4OpRayleigh* fRayleighScatteringProcess;
+    static G4ThreadLocal G4OpMieHG* fMieHGScatteringProcess;
+    static G4ThreadLocal G4OpBoundaryProcess* fBoundaryProcess;
+};
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-OpNovicePhysicsListMessenger::~OpNovicePhysicsListMessenger()
-{
-  delete fVerboseCmd;
-  delete fCerenkovCmd;
-  delete fPhysDir;
-  delete fOpNoviceDir;
-}
-
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
-void OpNovicePhysicsListMessenger::SetNewValue(G4UIcommand* command,
-                                               G4String newValue)
-{
-  if( command == fVerboseCmd )
-   {fPhysicsList->SetVerbose(fVerboseCmd->GetNewIntValue(newValue));}
-
-  if( command == fCerenkovCmd )
-   {fPhysicsList->
-              SetNbOfPhotonsCerenkov(fCerenkovCmd->GetNewIntValue(newValue));}
-}
-
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+#endif /* PhysicsList_h */

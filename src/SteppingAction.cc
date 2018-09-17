@@ -30,11 +30,12 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
   if (volumeName.find("Scint") != G4String::npos) {
      GPMAnalysis::GetInstance()->AddScintEDep(edep);
   }
-  if (parentID != 0) {
+  if (parentID > 0) {
      G4int PDGID = track->GetParticleDefinition()->GetPDGEncoding(); 
      G4int trackIndex = track->GetTrackID();
     // if (volumeName == "GasGap1" && V_volname == "PhotoCathodeLog" && abs(PDGID) == 11)
     //    G4cout << " Electron from " << V_volname << " made it to " << volumeName << G4endl;
      GPMAnalysis::GetInstance()->ScintPCProd(PDGID, V_volname, volumeName, trackIndex); 
+     GPMAnalysis::GetInstance()->OpPhoton(track->GetCreatorProcess()->GetProcessName());
   } 
 }
